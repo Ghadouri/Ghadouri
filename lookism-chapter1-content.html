@@ -32,10 +32,13 @@
             max-width: 800px;
             margin: 20px auto;
         }
-        .chapter-content iframe {
+        #pdf-container {
             width: 100%;
-            height: 100vh; /* Adjust height as needed */
-            border: none;
+            text-align: center;
+        }
+        .page {
+            display: block;
+            margin: 20px auto;
         }
         footer {
             background-color: #004d00;
@@ -47,6 +50,7 @@
             bottom: 0;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js"></script>
 </head>
 <body>
     <header>
@@ -55,12 +59,45 @@
 
     <div class="chapter-content">
         <h2>Chapter 1: Full Content</h2>
-        <!-- Embed the PDF -->
-        <iframe src="1_1.pdf" title="Lookism Chapter 1 Full Content"></iframe>
+        <div id="pdf-container"></div>
     </div>
 
     <footer>
         <p>Website by Ghadouri</p>
     </footer>
+
+    <script>
+        // URL of the PDF file
+        const pdfUrl = '1_1.pdf';
+
+        // Load the PDF
+        pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+            const numPages = pdf.numPages;
+            
+            // Loop through each page and render it
+            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                pdf.getPage(pageNum).then(page => {
+                    const scale = 1.5;
+                    const viewport = page.getViewport({ scale });
+                    
+                    // Prepare canvas using PDF page dimensions
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    // Append canvas to the container
+                    document.getElementById('pdf-container').appendChild(canvas);
+                    
+                    // Render PDF page into canvas context
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
