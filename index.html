@@ -54,10 +54,12 @@
             margin-bottom: 20px;
         }
         .manga-list {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 items per row */
             gap: 10px; /* Space between images */
             justify-content: center;
+            max-width: 1000px; /* Adjust width if necessary */
+            margin: 0 auto; /* Center the container */
         }
         .manga-item {
             text-align: center;
@@ -103,6 +105,9 @@
                 height: 60px; /* Adjust size for smaller screens */
                 margin-bottom: 10px;
             }
+            .manga-list {
+                grid-template-columns: repeat(2, 1fr); /* 2 items per row on small screens */
+            }
             .manga-list img {
                 width: 100px; /* Adjust size for smaller screens */
                 height: 150px; /* Adjust height for smaller screens */
@@ -142,7 +147,7 @@
             </div>
             <div class="manga-item">
                 <img src="C6.jpg" alt="Manga Cover 6" onclick="window.location.href='chapters6.html';">
-                <p>Invincible Man</p>
+                <p>New Title</p>
             </div>
         </div>
     </div>
