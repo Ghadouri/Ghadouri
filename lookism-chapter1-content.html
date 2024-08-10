@@ -30,10 +30,11 @@
         .chapter-content {
             padding: 20px;
             max-width: 100%;
-            margin: 20px auto;
+            margin: 0 auto;
         }
         #pdf-container {
             width: 100%;
+            overflow: auto;
             text-align: center;
         }
         .page {
@@ -70,40 +71,53 @@
         // URL of the PDF file
         const pdfUrl = '1_1.pdf';
 
-        // Load the PDF
-        pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
-            const numPages = pdf.numPages;
-
-            // Function to render each page
-            function renderPage(pageNum) {
+        function renderPage(pageNum, scale) {
+            pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
                 pdf.getPage(pageNum).then(page => {
-                    const viewport = page.getViewport({ scale: 1 });
-                    const scale = window.innerWidth / viewport.width; // Scale to fit width
-                    const scaledViewport = page.getViewport({ scale });
-
+                    const viewport = page.getViewport({ scale: scale });
+                    
                     // Prepare canvas using PDF page dimensions
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
-                    canvas.width = window.innerWidth; // Set width to match screen width
-                    canvas.height = scaledViewport.height; // Set height according to the aspect ratio
-
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
                     // Append canvas to the container
                     document.getElementById('pdf-container').appendChild(canvas);
-
+                    
                     // Render PDF page into canvas context
                     const renderContext = {
                         canvasContext: context,
-                        viewport: scaledViewport
+                        viewport: viewport
                     };
                     page.render(renderContext);
                 });
-            }
+            });
+        }
 
-            // Render all pages
-            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-                renderPage(pageNum);
-            }
-        });
+        function adjustPdf() {
+            const container = document.getElementById('pdf-container');
+            const containerHeight = window.innerHeight - document.querySelector('header').offsetHeight - document.querySelector('footer').offsetHeight;
+            const containerWidth = window.innerWidth;
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+                const numPages = pdf.numPages;
+                
+                // Remove all existing pages
+                container.innerHTML = '';
+
+                // Render each page
+                for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                    const scale = containerHeight / pdf.getPage(pageNum).getViewport({ scale: 1 }).height;
+                    renderPage(pageNum, scale);
+                }
+            });
+        }
+
+        // Adjust PDF pages on load
+        window.addEventListener('load', adjustPdf);
+        // Adjust PDF pages on resize
+        window.addEventListener('resize', adjustPdf);
     </script>
 </body>
 </html>
