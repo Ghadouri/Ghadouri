@@ -13,57 +13,45 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            text-align: center;
         }
         header {
             background-color: #004d00;
             padding: 20px;
             color: white;
-            text-align: center;
         }
         header h1 {
             font-family: 'Roboto', sans-serif;
             font-size: 2.5em;
+            font-weight: 700;
             margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
         .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
             padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            max-width: 1000px;
+            margin: 20px auto;
             position: relative;
         }
         .cover {
-            width: 200px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 150px;
             height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-right: 20px;
-        }
-        .content {
-            flex: 1;
-        }
-        .content h2 {
-            font-size: 1.8em;
-            margin-top: 0;
-            color: #004d00;
         }
         .chapter-list {
-            padding: 0;
+            margin-top: 20px;
+            padding-top: 20px;
+            text-align: left;
+            display: inline-block;
+        }
+        .chapter-list ul {
             list-style: none;
+            padding: 0;
         }
-        .chapter-list a {
-            text-decoration: none;
-            color: #333;
-            font-size: 1.2em;
-            padding: 10px 0;
-            display: block;
-            border-bottom: 1px solid #ddd;
-        }
-        .chapter-list a:hover {
-            background-color: #f4f4f4;
+        .chapter-list li {
+            margin: 10px 0;
         }
         footer {
             background-color: #004d00;
@@ -83,13 +71,14 @@
 
     <div class="container">
         <img src="C1.jpg" alt="Lookism Cover" class="cover">
-        <div class="content">
+        <div class="chapter-list">
             <h2>Chapters</h2>
-            <ul class="chapter-list">
+            <ul>
                 <li><a href="lookism-chapter1-content.html">Chapter 1</a></li>
+                <!-- Continue the list for Chapters 2 to 512 -->
                 <li><a href="lookism-chapter2-content.html">Chapter 2</a></li>
                 <li><a href="lookism-chapter3-content.html">Chapter 3</a></li>
-                <!-- Add more chapters here -->
+                <!-- Add links for all other chapters -->
                 <li><a href="lookism-chapter512-content.html">Chapter 512</a></li>
             </ul>
         </div>
