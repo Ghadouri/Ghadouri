@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #eaeaea;
+            background-color: #f4f4f4;
             color: #333;
             direction: rtl; /* Right-to-left text direction */
         }
@@ -20,11 +20,11 @@
             max-width: 1200px;
             margin: 0 auto;
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
         .cover {
-            width: 250px; /* Adjust size as needed */
+            width: 150px; /* Smaller size for the cover image */
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -36,8 +36,11 @@
         }
         .chapter-list h2 {
             margin-top: 0;
-            font-size: 24px;
-            color: #444;
+            font-size: 28px;
+            color: #222;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
         .chapter-list ul {
             list-style: none;
@@ -45,12 +48,13 @@
             margin: 0;
         }
         .chapter-list ul li {
-            margin: 10px 0;
+            margin: 15px 0;
             font-size: 18px;
         }
         .chapter-list a {
             text-decoration: none;
             color: #007bff; /* Link color */
+            font-weight: bold;
             transition: color 0.3s ease, text-decoration 0.3s ease;
         }
         .chapter-list a:hover {
