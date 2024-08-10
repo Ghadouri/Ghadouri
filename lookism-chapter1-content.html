@@ -29,7 +29,7 @@
         }
         .chapter-content {
             padding: 20px;
-            max-width: 800px;
+            max-width: 100%;
             margin: 20px auto;
         }
         #pdf-container {
@@ -38,7 +38,7 @@
         }
         .page {
             display: block;
-            margin: 20px auto;
+            margin: 0 auto;
         }
         footer {
             background-color: #004d00;
@@ -77,14 +77,15 @@
             // Loop through each page and render it
             for (let pageNum = 1; pageNum <= numPages; pageNum++) {
                 pdf.getPage(pageNum).then(page => {
-                    const scale = 1.5;
-                    const viewport = page.getViewport({ scale });
+                    const viewport = page.getViewport({ scale: 1 });
+                    const scale = window.innerWidth / viewport.width; // Scale to fit width
+                    const scaledViewport = page.getViewport({ scale });
                     
                     // Prepare canvas using PDF page dimensions
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
+                    canvas.width = window.innerWidth; // Set width to match screen width
+                    canvas.height = scaledViewport.height; // Set height according to the aspect ratio
                     
                     // Append canvas to the container
                     document.getElementById('pdf-container').appendChild(canvas);
@@ -92,7 +93,7 @@
                     // Render PDF page into canvas context
                     const renderContext = {
                         canvasContext: context,
-                        viewport: viewport
+                        viewport: scaledViewport
                     };
                     page.render(renderContext);
                 });
