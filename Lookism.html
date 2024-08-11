@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lookism Manga - List of chapters.">
-    <meta name="keywords" content="Lookism, manga, chapters">
+    <meta name="description" content="Lookism Manga - Chapter list">
+    <meta name="keywords" content="manga, Lookism, chapters">
     <title>Lookism Manga</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,60 +15,35 @@
             background-color: #f4f4f4;
             text-align: center;
         }
-        header {
+        .header {
             background-color: #004d00; /* Very strong green */
             padding: 20px;
-            display: flex;
-            align-items: center;
-            color: red; /* Red text color for the logo */
-            position: relative;
-            max-width: 1200px; /* Adjust width of the header */
-            margin: 0 auto; /* Center the header */
-        }
-        header img {
-            height: 80px; /* Size of the logo */
-            margin-right: 20px; /* Space between logo and text */
-        }
-        header h1 {
-            font-family: 'Roboto', sans-serif; /* Stylish font */
-            font-size: 2.5em; /* Larger text size */
-            font-weight: 700; /* Bold text */
-            margin: 0;
-            flex-grow: 1;
-            text-align: center;
-            color: #ff4500; /* Bright red color for text */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Text shadow */
-            letter-spacing: 1px; /* Spacing between letters */
-        }
-        .container {
-            margin-top: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 1200px; /* Adjust width of the container */
-            margin: 50px auto; /* Center the container */
-        }
-        .cover-image {
-            width: 150px;
-            height: auto;
-            margin: 20px;
-        }
-        .chapter-list {
-            text-align: right;
-        }
-        .chapter-list a {
-            display: block;
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #007bff;
             color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 1.2em;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .chapter-list a:hover {
-            background-color: #0056b3;
+        .header img {
+            height: 200px; /* Size of the cover image */
+            margin-bottom: 20px;
+        }
+        .chapters-list {
+            margin: 50px auto;
+            max-width: 600px;
+        }
+        .chapters-list a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .chapters-list a:hover {
+            background-color: #004d00; /* Green background on hover */
+            color: white;
         }
         footer {
             background-color: #004d00; /* Matching header green */
@@ -77,8 +53,6 @@
             width: 100%;
             bottom: 0;
             text-align: center;
-            max-width: 1200px; /* Adjust width of the footer */
-            margin: 0 auto; /* Center the footer */
         }
         footer p {
             margin: 0;
@@ -86,21 +60,6 @@
     </style>
 </head>
 <body>
-    <header>
-        <img src="logo-GH.png" alt="GH Logo">
-        <h1>Lookism</h1>
-    </header>
-
-    <div class="container">
-        <img src="C1.jpg" alt="غلاف Lookism" class="cover-image">
-        <div class="chapter-list">
-            <h2>قائمة الفصول</h2>
-            <a href="chapter_512.html">الفصل 512</a>
-        </div>
-    </div>
-
-    <footer>
-        <p>Website by Ghadouri</p>
-    </footer>
-</body>
-</html>
+    <div class="header">
+        <img src="C1.jpg" alt="Lookism Cover">
+    </div
