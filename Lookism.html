@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lookism Manga - Chapter List">
-    <meta name="keywords" content="manga, Lookism, chapters">
-    <title>Lookism - Chapter List</title>
+    <meta name="description" content="Lookism Chapter Viewer">
+    <meta name="keywords" content="manga, Lookism, PDF viewer">
+    <title>Lookism - Chapter Viewer</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
     <style>
@@ -42,13 +42,98 @@
             letter-spacing: 1px; /* Spacing between letters */
         }
         .content {
-            margin-top: 50px;
+            margin: 50px auto;
+            max-width: 1200px; /* Adjust width of the container */
+        }
+        .page-container {
+            margin-top: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 1200px; /* Adjust width of the container */
-            margin: 50px auto; /* Center the container */
         }
-        .content h1 {
-            font-size: 2em;
-            margin-bottom: 
+        .page-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        footer {
+            background-color: #004d00; /* Matching header green */
+            color: white;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            text-align: center;
+            max-width: 1200px; /* Adjust width of the footer */
+            margin: 0 auto; /* Center the footer */
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo-GH.png" alt="GH Logo">
+        <h1>Lookism Chapter Viewer</h1>
+    </header>
+
+    <div class="content">
+        <div class="page-container" id="page-container">
+            <!-- PDF pages as images will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <footer>
+        <p>Website by Ghadouri</p>
+    </footer>
+
+    <script src="pdf.mjs"></script>
+    <script src="pdf.worker.mjs"></script>
+    <script>
+        // Get the chapter number from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterNumber = urlParams.get('chapter');
+
+        if (chapterNumber) {
+            // Format chapter number with leading zeros
+            const formattedChapterNumber = chapterNumber.padStart(3, '0');
+            // URL of the PDF file
+            const pdfUrl = `Lookism chapter ${formattedChapterNumber}.pdf`;
+
+            // PDF.js setup
+            pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+                const pageContainer = document.getElementById('page-container');
+                const numPages = pdf.numPages;
+
+                // Iterate over each page in the PDF
+                for (let i = 1; i <= numPages; i++) {
+                    pdf.getPage(i).then(page => {
+                        const viewport = page.getViewport({ scale: 1 });
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        page.render(renderContext).promise.then(() => {
+                            const img = document.createElement('img');
+                            img.src = canvas.toDataURL();
+                            pageContainer.appendChild(img);
+                        });
+                    });
+                }
+            }).catch(error => {
+                console.error('Error loading PDF:', error);
+            });
+        } else {
+            document.querySelector('.content').innerHTML = '<p>No chapter selected.</p>';
+        }
+    </script>
+</body>
+</html>
