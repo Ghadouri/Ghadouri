@@ -130,6 +130,7 @@
                 }
             }).catch(error => {
                 console.error('Error loading PDF:', error);
+                document.querySelector('.content').innerHTML = '<p>Error loading chapter.</p>';
             });
         } else {
             document.querySelector('.content').innerHTML = '<p>No chapter selected.</p>';
