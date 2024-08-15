@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stellar Sword Master - Manga Details">
+    <meta name="keywords" content="Stellar Sword Master, manga, chapters">
+    <title>Stellar Sword Master - Manga Details</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background-color: #004d00;
+            padding: 20px;
+            color: #ff4500;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header img {
+            height: 80px;
+            margin-right: 20px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+        .content {
+            margin: 50px auto;
+            max-width: 1200px;
+        }
+        .content img {
+            width: 300px;
+            height: auto;
+            border: 5px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .chapters {
+            margin-top: 30px;
+            padding: 0;
+            list-style: none;
+        }
+        .chapters li {
+            margin: 5px 0;
+            font-size: 1.1em;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .chapters a {
+            text-decoration: none;
+            color: #ff4500;
+            font-weight: bold;
+        }
+        .chapters a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #004d00;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo-GH.png" alt="GH Logo">
+        <h1>Stellar Sword Master</h1>
+    </header>
+
+    <div class="content">
+        <img src="C4.jpg" alt="Stellar Sword Master Manga Image"> <!-- Cover image -->
+        <h2>Chapters</h2>
+        <ul class="chapters">
+            <!-- Generating chapters from 1 to 55 -->
+            <script>
+                // Function to pad numbers with leading zeros
+                function padNumber(num, size) {
+                    let s = String(num);
+                    while (s.length < size) s = '0' + s;
+                    return s;
+                }
+
+                // Generate chapter list
+                for (let i = 1; i <= 55; i++) {
+                    const paddedNumber = padNumber(i, 3);
+                    document.write(`<li><a href="pdf-viewer.html?pdf=inst${paddedNumber}.pdf">Chapter ${i}</a></li>`);
+                }
+            </script>
+        </ul>
+    </div>
+
+    <footer>
+        <p>Website by Ghadouri</p>
+    </footer>
+</body>
+</html>
