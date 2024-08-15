@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .pdf-container {
+            margin: 50px auto;
+            max-width: 1200px;
+        }
+        .pdf-page {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: 10px;
+        }
+        footer {
+            background-color: #004d00;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.7.107/pdf.min.js"></script>
+</head>
+<body>
+    <h1>PDF Viewer</h1>
+    <div class="pdf-container" id="pdf-container"></div>
+
+    <footer>
+        <p>Website by Ghadouri</p>
+    </footer>
+
+    <script>
+        // Get the PDF file name from query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const pdfFile = urlParams.get('pdf');
+
+        if (pdfFile) {
+            // Load and display the PDF
+            pdfjsLib.getDocument(pdfFile).promise.then(pdf => {
+                const container = document.getElementById('pdf-container');
+
+                // Function to render a page
+                function renderPage(pageNum) {
+                    return pdf.getPage(pageNum).then(page => {
+                        const scale = 1.5;
+                        const viewport = page.getViewport({ scale });
+
+                        // Create canvas for rendering the page
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        container.appendChild(canvas);
+
+                        // Render the page
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        return page.render(renderContext).promise;
+                    });
+                }
+
+                // Render all pages
+                const numPages = pdf.numPages;
+                const promises = [];
+                for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                    promises.push(renderPage(pageNum));
+                }
+                return Promise.all(promises);
+            }).catch(error => {
+                console.error('Error loading PDF:', error);
+                document.getElementById('pdf-container').innerHTML = '<p>Error loading PDF.</p>';
+            });
+        } else {
+            document.getElementById('pdf-container').innerHTML = '<p>No PDF file specified.</p>';
+        }
+    </script>
+</body>
+</html>
