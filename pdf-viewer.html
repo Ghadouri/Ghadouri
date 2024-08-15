@@ -15,16 +15,19 @@
             overflow: hidden; /* Hide scrollbars */
         }
         .pdf-container {
-            margin: 50px auto;
+            margin: 0 auto;
             max-width: 100vw; /* Make the container fit the viewport width */
             max-height: 100vh; /* Make the container fit the viewport height */
             overflow: auto; /* Enable scrolling if needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .pdf-page {
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
+            margin: 0; /* Remove margin to eliminate gaps */
+            padding: 0; /* Remove padding to eliminate gaps */
+            border: none; /* Remove border if you don’t want any border */
             background: #fff;
-            padding: 10px;
             width: 100%; /* Full width of the container */
             height: auto; /* Maintain aspect ratio */
         }
@@ -66,7 +69,7 @@
                 // Function to render a page
                 function renderPage(pageNum) {
                     return pdf.getPage(pageNum).then(page => {
-                        const scale = 2; // Adjust this scale if needed
+                        const scale = 1; // Adjust this scale if needed
                         const viewport = page.getViewport({ scale });
 
                         // Create canvas for rendering the page
