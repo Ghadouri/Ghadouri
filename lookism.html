@@ -91,10 +91,11 @@
         <h2>Chapters</h2>
         <ul class="chapters">
             <!-- Generating chapters from 1 to 512 -->
-            <!-- Each chapter link redirects to the template page with chapter number as query parameter -->
+            <!-- Each chapter link redirects to the pdf-viewer.html page with chapter number as query parameter -->
             <script>
                 for (let i = 1; i <= 512; i++) {
-                    document.write('<li><a href="chapter.html?chapter=' + i + '">Chapter ' + i + '</a></li>');
+                    const chapterNumber = i.toString().padStart(3, '0');
+                    document.write('<li><a href="pdf-viewer.html?pdf=Lookism%20chapter%20' + chapterNumber + '.pdf">Chapter ' + i + '</a></li>');
                 }
             </script>
         </ul>
