@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="favicon.png">
-    <title>CBZ Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,22 +14,23 @@
             overflow: hidden;
         }
         .cbz-container {
-            margin: 0 auto;
-            max-width: 100vw;
-            max-height: 100vh;
-            overflow: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: auto;
         }
         .cbz-image {
+            max-width: 100vw;
+            max-height: 100vh;
+            width: auto;
+            height: auto;
             margin: 0;
             padding: 0;
             border: none;
             background: #fff;
-            width: 100%;
-            height: auto;
-            max-height: 100vh;
         }
         footer {
             background-color: #004d00;
@@ -47,7 +47,6 @@
             margin: 0;
         }
     </style>
-    <!-- Use JSZip 3.10.1 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
@@ -58,38 +57,37 @@
     </footer>
 
     <script>
-        // Function to load the CBZ file and display its images
-        function loadCBZ(cbzFile) {
-            fetch(`https://raw.githubusercontent.com/Ghadouri/Ghadouri/main/${cbzFile}`)
-                .then(response => response.blob())
-                .then(blob => JSZip.loadAsync(blob))
-                .then(zip => {
-                    const container = document.getElementById('cbz-container');
-                    container.innerHTML = ''; // Clear existing content
-
-                    zip.forEach((relativePath, zipEntry) => {
-                        if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(relativePath)) {
-                            zipEntry.async('blob').then(blob => {
-                                const img = document.createElement('img');
-                                img.src = URL.createObjectURL(blob);
-                                img.classList.add('cbz-image');
-                                container.appendChild(img);
-                            });
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading CBZ:', error);
-                    document.getElementById('cbz-container').innerHTML = '<p>Error loading CBZ. Please check the file path and name.</p>';
-                });
-        }
-
         // Get the CBZ file name from query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const cbzFile = urlParams.get('cbz');
 
         if (cbzFile) {
-            loadCBZ(cbzFile);
+            fetch(`https://raw.githubusercontent.com/Ghadouri/Ghadouri/main/${cbzFile}`)
+                .then(response => response.blob())
+                .then(blob => JSZip.loadAsync(blob))
+                .then(zip => {
+                    const container = document.getElementById('cbz-container');
+                    const imagePromises = [];
+
+                    // Loop through each file in the ZIP and display it if it's an image
+                    zip.forEach((relativePath, zipEntry) => {
+                        if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(relativePath)) {
+                            const imagePromise = zipEntry.async('blob').then(blob => {
+                                const img = document.createElement('img');
+                                img.src = URL.createObjectURL(blob);
+                                img.classList.add('cbz-image');
+                                container.appendChild(img);
+                            });
+                            imagePromises.push(imagePromise);
+                        }
+                    });
+
+                    return Promise.all(imagePromises);
+                })
+                .catch(error => {
+                    console.error('Error loading CBZ:', error);
+                    document.getElementById('cbz-container').innerHTML = '<p>Error loading CBZ. Please check the file path and name.</p>';
+                });
         } else {
             document.getElementById('cbz-container').innerHTML = '<p>No CBZ file specified.</p>';
         }
