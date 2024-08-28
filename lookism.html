@@ -90,12 +90,19 @@
         <img src="C1.jpg" alt="Lookism Manga Image"> <!-- Cover image -->
         <h2>Chapters</h2>
         <ul class="chapters">
-            <!-- Generating chapters from 1 to 512 -->
-            <!-- Each chapter link redirects to the pdf-viewer.html page with chapter number as query parameter -->
+            <!-- Generating chapters from 1 to 55 -->
             <script>
-                for (let i = 1; i <= 512; i++) {
-                    const chapterNumber = i.toString().padStart(3, '0');
-                    document.write('<li><a href="pdf-viewer.html?pdf=Lookism%20chapter%20' + chapterNumber + '.pdf">Chapter ' + i + '</a></li>');
+                // Function to pad numbers with leading zeros
+                function padNumber(num, size) {
+                    let s = String(num);
+                    while (s.length < size) s = '0' + s;
+                    return s;
+                }
+
+                // Generate chapter list
+                for (let i = 1; i <= 55; i++) {
+                    const paddedNumber = padNumber(i, 3);
+                    document.write(`<li><a href="pdf-viewer.html?pdf=lookism${paddedNumber}.pdf">Chapter ${i}</a></li>`);
                 }
             </script>
         </ul>
