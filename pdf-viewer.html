@@ -48,7 +48,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </head>
 <body>
-    <div class="cbz-container" id="cbz-container"></div>
+    <div class="cbz-container" id="cbz-container">
+        <div class="loading">Loading...</div>
+    </div>
 
     <footer>
         <p>Website by Ghadouri</p>
@@ -61,11 +63,22 @@
 
         if (cbzFile) {
             fetch(`https://raw.githubusercontent.com/Ghadouri/Ghadouri/main/${cbzFile}`)
-                .then(response => response.blob())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob();
+                })
                 .then(blob => JSZip.loadAsync(blob))
                 .then(zip => {
                     const container = document.getElementById('cbz-container');
                     const imagePromises = [];
+
+                    // Clear loading message
+                    const loadingMessage = container.querySelector('.loading');
+                    if (loadingMessage) {
+                        loadingMessage.remove();
+                    }
 
                     // Loop through each file in the ZIP and display it if it's an image
                     zip.forEach((relativePath, zipEntry) => {
@@ -84,7 +97,8 @@
                 })
                 .catch(error => {
                     console.error('Error loading CBZ:', error);
-                    document.getElementById('cbz-container').innerHTML = '<p>Error loading CBZ. Please check the file path and name.</p>';
+                    const container = document.getElementById('cbz-container');
+                    container.innerHTML = '<p>Error loading CBZ. Please check the file path and name.</p>';
                 });
         } else {
             document.getElementById('cbz-container').innerHTML = '<p>No CBZ file specified.</p>';
