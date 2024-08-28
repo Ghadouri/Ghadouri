@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Viewer</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
         body {
@@ -12,24 +11,24 @@
             padding: 0;
             background-color: #f4f4f4;
             text-align: center;
-            overflow: hidden; /* Hide scrollbars */
+            overflow: hidden;
         }
-        .pdf-container {
+        .cbz-container {
             margin: 0 auto;
-            max-width: 100vw; /* Make the container fit the viewport width */
-            max-height: 100vh; /* Make the container fit the viewport height */
-            overflow: auto; /* Enable scrolling if needed */
+            max-width: 100vw;
+            max-height: 100vh;
+            overflow: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        .pdf-page {
-            margin: 0; /* Remove margin to eliminate gaps */
-            padding: 0; /* Remove padding to eliminate gaps */
-            border: none; /* Remove border if you don’t want any border */
+        .cbz-image {
+            margin: 0;
+            padding: 0;
+            border: none;
             background: #fff;
-            width: 100%; /* Full width of the container */
-            height: auto; /* Maintain aspect ratio */
+            width: 100%;
+            height: auto;
         }
         footer {
             background-color: #004d00;
@@ -46,62 +45,49 @@
             margin: 0;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.7.107/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </head>
 <body>
-    <h1>PDF Viewer</h1>
-    <div class="pdf-container" id="pdf-container"></div>
+    <div class="cbz-container" id="cbz-container"></div>
 
     <footer>
         <p>Website by Ghadouri</p>
     </footer>
 
     <script>
-        // Get the PDF file name from query parameters
+        // Get the CBZ file name from query parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const pdfFile = urlParams.get('pdf');
+        const cbzFile = urlParams.get('cbz');
 
-        if (pdfFile) {
-            // Load and display the PDF
-            pdfjsLib.getDocument(pdfFile).promise.then(pdf => {
-                const container = document.getElementById('pdf-container');
+        if (cbzFile) {
+            fetch(`https://raw.githubusercontent.com/Ghadouri/Ghadouri/main/${cbzFile}`)
+                .then(response => response.blob())
+                .then(blob => JSZip.loadAsync(blob))
+                .then(zip => {
+                    const container = document.getElementById('cbz-container');
+                    const imagePromises = [];
 
-                // Function to render a page
-                function renderPage(pageNum) {
-                    return pdf.getPage(pageNum).then(page => {
-                        const scale = 1; // Adjust this scale if needed
-                        const viewport = page.getViewport({ scale });
-
-                        // Create canvas for rendering the page
-                        const canvas = document.createElement('canvas');
-                        const context = canvas.getContext('2d');
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-                        canvas.classList.add('pdf-page');
-                        container.appendChild(canvas);
-
-                        // Render the page
-                        const renderContext = {
-                            canvasContext: context,
-                            viewport: viewport
-                        };
-                        return page.render(renderContext).promise;
+                    // Loop through each file in the ZIP and display it if it's an image
+                    zip.forEach((relativePath, zipEntry) => {
+                        if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(relativePath)) {
+                            const imagePromise = zipEntry.async('blob').then(blob => {
+                                const img = document.createElement('img');
+                                img.src = URL.createObjectURL(blob);
+                                img.classList.add('cbz-image');
+                                container.appendChild(img);
+                            });
+                            imagePromises.push(imagePromise);
+                        }
                     });
-                }
 
-                // Render all pages
-                const numPages = pdf.numPages;
-                const promises = [];
-                for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-                    promises.push(renderPage(pageNum));
-                }
-                return Promise.all(promises);
-            }).catch(error => {
-                console.error('Error loading PDF:', error);
-                document.getElementById('pdf-container').innerHTML = '<p>Error loading PDF. Please check the file path and name.</p>';
-            });
+                    return Promise.all(imagePromises);
+                })
+                .catch(error => {
+                    console.error('Error loading CBZ:', error);
+                    document.getElementById('cbz-container').innerHTML = '<p>Error loading CBZ. Please check the file path and name.</p>';
+                });
         } else {
-            document.getElementById('pdf-container').innerHTML = '<p>No PDF file specified.</p>';
+            document.getElementById('cbz-container').innerHTML = '<p>No CBZ file specified.</p>';
         }
     </script>
 </body>
