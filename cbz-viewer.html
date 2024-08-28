@@ -47,7 +47,8 @@
             margin: 0;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <!-- Use JSZip 3.10.1 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
     <div class="cbz-container" id="cbz-container"></div>
@@ -57,37 +58,38 @@
     </footer>
 
     <script>
-        // Get the CBZ file name from query parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const cbzFile = urlParams.get('cbz');
-
-        if (cbzFile) {
+        // Function to load the CBZ file and display its images
+        function loadCBZ(cbzFile) {
             fetch(`https://raw.githubusercontent.com/Ghadouri/Ghadouri/main/${cbzFile}`)
                 .then(response => response.blob())
                 .then(blob => JSZip.loadAsync(blob))
                 .then(zip => {
                     const container = document.getElementById('cbz-container');
-                    const imagePromises = [];
+                    container.innerHTML = ''; // Clear existing content
 
-                    // Loop through each file in the ZIP and display it if it's an image
                     zip.forEach((relativePath, zipEntry) => {
                         if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(relativePath)) {
-                            const imagePromise = zipEntry.async('blob').then(blob => {
+                            zipEntry.async('blob').then(blob => {
                                 const img = document.createElement('img');
                                 img.src = URL.createObjectURL(blob);
                                 img.classList.add('cbz-image');
                                 container.appendChild(img);
                             });
-                            imagePromises.push(imagePromise);
                         }
                     });
-
-                    return Promise.all(imagePromises);
                 })
                 .catch(error => {
                     console.error('Error loading CBZ:', error);
                     document.getElementById('cbz-container').innerHTML = '<p>Error loading CBZ. Please check the file path and name.</p>';
                 });
+        }
+
+        // Get the CBZ file name from query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const cbzFile = urlParams.get('cbz');
+
+        if (cbzFile) {
+            loadCBZ(cbzFile);
         } else {
             document.getElementById('cbz-container').innerHTML = '<p>No CBZ file specified.</p>';
         }
