@@ -75,6 +75,8 @@
 
                     // Loop through each file in the ZIP and display it if it's an image
                     zip.forEach((relativePath, zipEntry) => {
+                        console.log(`Processing file: ${relativePath}`); // Log file name
+
                         if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(relativePath)) {
                             const imagePromise = zipEntry.async('blob').then(blob => {
                                 const img = document.createElement('img');
