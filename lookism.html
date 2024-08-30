@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lookism Manga - Chapters List">
+    <meta name="description" content="Lookism - Manga Details">
     <meta name="keywords" content="Lookism, manga, chapters">
-    <title>Lookism - Chapters</title>
+    <title>Lookism - Manga Details</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -19,22 +19,33 @@
         header {
             background-color: #004d00;
             padding: 20px;
-            color: white;
+            color: #ff4500;
             position: relative;
             max-width: 1200px;
             margin: 0 auto;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        header img {
+            height: 80px;
+            margin-right: 20px;
         }
         header h1 {
-            font-family: 'Roboto', sans-serif;
             font-size: 2.5em;
             font-weight: 700;
             margin: 0;
-            color: #ff4500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
         .content {
             margin: 50px auto;
             max-width: 1200px;
+        }
+        .content img {
+            width: 300px;
+            height: auto;
+            border: 5px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .chapters {
             margin-top: 30px;
@@ -74,11 +85,15 @@
 </head>
 <body>
     <header>
-        <h1>Lookism - Chapters</h1>
+        <img src="logo-GH.png" alt="GH Logo">
+        <h1>Lookism</h1>
     </header>
 
     <div class="content">
+        <img src="C1.jpg" alt="Lookism Manga Image"> <!-- Cover image -->
+        <h2>Chapters</h2>
         <ul class="chapters">
+            <!-- Generating chapters from 1 to 55 -->
             <script>
                 // Function to pad numbers with leading zeros
                 function padNumber(num, size) {
@@ -87,11 +102,8 @@
                     return s;
                 }
 
-                // Total number of chapters
-                const totalChapters = 517; // Adjust this based on the actual number of chapters
-
                 // Generate chapter list
-                for (let i = 1; i <= totalChapters; i++) {
+                for (let i = 1; i <= 517; i++) {
                     const paddedNumber = padNumber(i, 3);
                     document.write(`<li><a href="cbz-viewer.html?cbz=Lookism%20chapter%20${paddedNumber}.cbz">Chapter ${i}</a></li>`);
                 }
