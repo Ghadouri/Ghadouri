@@ -80,14 +80,17 @@
     <div class="content">
         <ul class="chapters">
             <script>
+                // Function to pad numbers with leading zeros
                 function padNumber(num, size) {
                     let s = String(num);
                     while (s.length < size) s = '0' + s;
                     return s;
                 }
 
-                const totalChapters = 517;
+                // Total number of chapters
+                const totalChapters = 517; // Adjust this based on the actual number of chapters
 
+                // Generate chapter list
                 for (let i = 1; i <= totalChapters; i++) {
                     const paddedNumber = padNumber(i, 3);
                     document.write(`<li><a href="cbz-viewer.html?cbz=Lookism%20chapter%20${paddedNumber}.cbz">Chapter ${i}</a></li>`);
