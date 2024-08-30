@@ -23,6 +23,9 @@
             position: relative;
             max-width: 1200px;
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         header img {
             height: 80px;
@@ -100,9 +103,9 @@
                 }
 
                 // Generate chapter list
-                for (let i = 1; i <= 55; i++) {
+                for (let i = 1; i <= 517; i++) {
                     const paddedNumber = padNumber(i, 3);
-                    document.write(`<li><a href="pdf-viewer.html?pdf=inst${paddedNumber}.pdf">Chapter ${i}</a></li>`);
+                    document.write(`<li><a href="cbz-viewer.html?cbz=Lookism%20chapter%20${paddedNumber}.cbz">Chapter ${i}</a></li>`);
                 }
             </script>
         </ul>
