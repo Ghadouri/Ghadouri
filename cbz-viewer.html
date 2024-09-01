@@ -71,26 +71,31 @@
                 .then(zip => {
                     const container = document.getElementById('cbz-container');
                     const imagePromises = [];
+                    const imageEntries = [];
 
-                    // Loop through each file in the ZIP and display it if it's an image
+                    // Loop through each file in the ZIP and store image entries
                     zip.forEach((relativePath, zipEntry) => {
-                        console.log(`Processing file: ${relativePath}`); // Log file name
-
                         if (!zipEntry.dir && /\.(png|jpe?g|gif)$/i.test(relativePath)) {
-                            const imagePromise = zipEntry.async('blob')
-                                .then(blob => {
-                                    const img = document.createElement('img');
-                                    img.src = URL.createObjectURL(blob);
-                                    img.classList.add('cbz-image');
-                                    container.appendChild(img);
-                                })
-                                .catch(error => {
-                                    console.error(`Error processing image ${relativePath}: ${error.message}`);
-                                });
-                            imagePromises.push(imagePromise);
-                        } else {
-                            console.warn(`Skipped file: ${relativePath}`); // Log skipped files
+                            imageEntries.push(zipEntry);
                         }
+                    });
+
+                    // Sort image entries by their names
+                    imageEntries.sort((a, b) => a.name.localeCompare(b.name));
+
+                    // Create promises to load images
+                    imageEntries.forEach(zipEntry => {
+                        const imagePromise = zipEntry.async('blob')
+                            .then(blob => {
+                                const img = document.createElement('img');
+                                img.src = URL.createObjectURL(blob);
+                                img.classList.add('cbz-image');
+                                container.appendChild(img);
+                            })
+                            .catch(error => {
+                                console.error(`Error processing image ${zipEntry.name}: ${error.message}`);
+                            });
+                        imagePromises.push(imagePromise);
                     });
 
                     return Promise.all(imagePromises);
